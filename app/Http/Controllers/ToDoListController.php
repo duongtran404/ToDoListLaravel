@@ -28,12 +28,17 @@ class ToDoListController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
-        $task = ToDoList::create([ 
-            'description' => $request->input('description'),
-            'begin_date' => $request->input('begin_date'),
-            'end_date' => $request->input('end_date')
+        $validated = request()->validate([
+            'description'   => 'required',
+            'begin_date'    => 'required|date|before:end_day',
+            'end_date'      => 'required|date|after:begin_date',
+        ]);
+        ToDoList::create([ 
+            'description' => $validated['description'],
+            'begin_date' => $validated['begin_date'],
+            'end_date' => $validated['end_date']
         ]);
         return redirect('ToDoList');
     }
@@ -53,13 +58,19 @@ class ToDoListController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        $toDoList = ToDoList::where('id', $id)->update([
-            'description' => $request->input('description'),
-            'begin_date' => $request->input('begin_date'),
-            'end_date' => $request->input('end_date'),
-            'status' => $request->input('status'),
+        $validated = request()->validate([
+            'description'   => 'required',
+            'begin_date'    => 'required|date|',
+            'end_date'      => 'required|date|',
+            'status'        => 'required'
+        ]);
+        ToDoList::where('id', $id)->update([
+            'description'   => $validated['description'],
+            'begin_date'    => $validated['begin_date'],
+            'end_date'      => $validated['end_date'],
+            'status'        => $validated['status'],
         ]);
         return redirect('ToDoList');
     }

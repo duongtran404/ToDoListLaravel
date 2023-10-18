@@ -1,25 +1,50 @@
-<h1>Edit form</h1>
+@extends('ToDoList.layout')
+@section('content')
+    
 <form action="{{route('ToDoList.update', ['ToDoList' => $id])}}" method="POST">
-
+    
     @method('put')
     @csrf
 
-    <label for="description">Description: </label>
-    <input type="text" id="description" name="description" required value="{{$toDoList->description}}"><br>
+    <div class="mx-auto mt-5" style="width: 700px;"> 
 
-    <label for="begin_date">Begin Date: </label>
-    <input type="date" id="start_date" name="begin_date" required value="{{$toDoList->begin_date}}"><br>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="description" value="{{$toDoList->description}}">
+            @error('description')
+                <span class="d-block fs-6 text-danger mt-2"> {{ $message }} </span>
+            @enderror
+        </div>
 
-    <label for="end_date">End Date: </label>
-    <input type="date" id="end_date" name="end_date" required value="{{$toDoList->end_date}}"><br>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">begin date</span>
+            <input type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="begin_date" value="{{$toDoList->begin_date}}">
+            @error('begin_date')
+                <span class="d-block fs-6 text-danger mt-2"> {{ $message }} </span>
+            @enderror
+        </div>
 
-    <label for="status">Status</label>
-    <select name="status">
-        {{$toDoList->status}}
-        <option value="not started">not started</option>
-        <option value="done">done</option>
-    </select>
-    <br>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">end date</span>
+            <input type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="end_date" value="{{$toDoList->end_date}}">
+            @error('end_date')
+                <span class="d-block fs-6 text-danger mt-2"> {{ $message }} </span>
+            @enderror
+        </div>
 
-    <button>Save</button>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Status</span>
+            <select name="status" class="form-select" aria-label="Default select example">>
+                {{$toDoList->status}}
+                <option value="done">Done</option>
+                <option value="not started">Not started</option>
+            </select>
+        <br>
+        </div>
+
+        <button class="btn btn-dark">Save</button>
+
+    </div>  
 </form>
+
+@endsection
